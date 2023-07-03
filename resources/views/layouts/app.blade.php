@@ -50,7 +50,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a class="nav-link" href="{{ route('personal.index') }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->username }}
                                 </a>
                             </li>
