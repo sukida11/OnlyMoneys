@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('avatars', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
-            $table->string('url');
-            $table->foreignId('user_id')->constrained('users', indexName: 'avatar_user_idx')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users', indexName: 'posts_user_idx')->onDelete('cascade');
+            $table->string('content');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('avatars');
+        Schema::dropIfExists('posts');
     }
 };

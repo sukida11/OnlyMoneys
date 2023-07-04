@@ -33,4 +33,17 @@ Route::group(
         Route::get('/edit', 'EditController')->name('personal.edit');
         Route::patch('/update/{user}', 'UpdateController')->name('personal.update');
         Route::get('/verify', 'VerifEmail')->name('personal.email');
+
+        Route::group([
+
+            'namespace' => 'Post',
+            'prefix' => 'posts'
+
+        ], function () {
+            Route::get('/', 'CreateController')->name('personal.post.create');
+            Route::post('/', 'StoreController')->name('personal.post.store');
+        });
+
 });
+
+

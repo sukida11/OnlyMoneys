@@ -27,7 +27,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'username',
         'password',
-        'email_verified_at'
+        'email_verified_at',
+        'bio'
     ];
 
     /**
@@ -57,6 +58,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function avatar() {
         return $this->hasOne(Avatar::class, 'user_id', 'id');
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class, 'user_id', 'id');
     }
 
 }

@@ -16,9 +16,12 @@
                 @endif
             </h1>
             <p>{{ $user->email }} | {{ $user->name }}</p>
-            <p></p>
+            <p class="bg-dark text-light p-3">{{ $user->bio }}</p>
             <p><a href="{{ route('personal.edit') }}" class="btn btn-outline-secondary">Настройки</a></p>
         </div>
     </div>
-
+    <hr>
+    <div class="row">
+        <a href="{{ route('personal.post.create') }}" class="btn btn-outline-secondary w-100">Новый пост</a>
+    </div>
 @endsection

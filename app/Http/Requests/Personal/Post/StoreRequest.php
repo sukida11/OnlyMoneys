@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Personal;
+namespace App\Http\Requests\Personal\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +22,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => 'file',
-            'username' => ['required', 'string', Rule::unique('users')->ignore($this->user->id)],
-            'email' => ['required', 'string', 'email', Rule::unique('users')->ignore($this->user->id)],
-            'name' => ['required', 'string'],
-            'bio' => ['string']
+            'content' => ['required', 'string'],
+            'images' => ['array']
         ];
     }
 }

@@ -49,6 +49,9 @@
                                     </span>
                     @enderror
                 </p>
+                <p>
+                    <textarea name="bio" id="bio" placeholder="bio" class="form-control" cols="30" rows="10">{{$user->bio}}</textarea>
+                </p>
 
                 <p>
                     <input type="submit" value="Сохранить" class="btn btn-outline-success">
