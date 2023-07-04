@@ -1,4 +1,5 @@
 <template>
+    <h1>Создание публикации</h1>
     <div class="form-group">
         <p>
             <textarea name="content" id="content" cols="" class="form-control" placeholder="content" v-model="content" rows="10"></textarea>
@@ -25,6 +26,10 @@ export default {
         }
     },
 
+    props: [
+        'redirect_link_after_create_post'
+    ],
+
     mounted() {
         this.dropzone = new Dropzone(this.$refs.dropzone, {
             url: '/api/posts',
@@ -46,6 +51,7 @@ export default {
             axios.post(`/api/posts`, data)
                 .then(response => {
                     console.log(response);
+                    window.location.replace(this.redirect_link_after_create_post)
                 })
         }
     }

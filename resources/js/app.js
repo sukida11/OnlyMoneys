@@ -12,8 +12,12 @@ const app = createApp({});
 import ImagesComponent from "./components/ImagesComponent.vue";
 import LoginComponent from "./components/login/LoginComponent.vue";
 import RegComponent from "./components/registration/RegComponent.vue";
+import IndexComponent from "./components/posts/IndexComponent.vue";
+import UpdateComponent from "./components/posts/UpdateComponent.vue";
 app.component('images-component', ImagesComponent);
 app.component('login-component', LoginComponent);
 app.component('registration-component', RegComponent)
+app.component('index-post-component', IndexComponent)
+app.component('update-post-component', UpdateComponent)
 
 app.mount('#app');

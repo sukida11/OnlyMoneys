@@ -3,25 +3,27 @@
 namespace App\Http\Controllers\Personal\Post;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Personal\Post\StoreRequest;
+use App\Http\Requests\Personal\Post\UpdateRequest;
 use App\Models\Post;
 use App\Models\PostImage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class StoreController extends Controller
+class UpdateController extends Controller
 {
-    public function __invoke(StoreRequest $request)
+    public function __invoke(UpdateRequest $request, Post $post)
     {
 
         $data = $request->validated();
         $user = auth()->user();
-        $data['user_id'] = $user->id;
-        $images = $data['images'] ?? false;
-        unset($data['images']);
 
-        $post = Post::create($data);
+        $images = $data['images'] ?? false;
+        $delete_images = $data['delete_images'] ?? false;
+
+        unset($data['images'], $data['delete_images']);
+
+        $post->update($data);
 
         if($images)
         {
@@ -41,7 +43,21 @@ class StoreController extends Controller
             }
         }
 
-        return redirect()->route('personal.index');
+        if($delete_images)
+        {
+            foreach ($delete_images as $image_id)
+            {
+                $image_content = PostImage::find((int)$image_id);
+
+                Storage::disk('public')->delete($image_content->path);
+
+                $image_content->delete();
+
+            }
+        }
+
+
+        return response()->json(['redirect_to' => route('personal.index')]);
 
     }
 }

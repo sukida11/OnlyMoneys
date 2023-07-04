@@ -7,5 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+
     use HasFactory;
+    protected $guarded = false;
+    protected $table = 'posts';
+
+    public function images() {
+        return $this->hasMany(PostImage::class, 'post_id', 'id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
 }

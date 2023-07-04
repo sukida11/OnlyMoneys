@@ -20,4 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'posts', 'namespace' => 'App\\Http\\Controllers\\Personal\\Post'], function () {
     Route::post('/', 'StoreController');
+    Route::get('/', 'IndexController');
+    Route::get('/{post}', 'ShowController');
+    Route::patch('/{post}', 'UpdateController');
 });

@@ -24,4 +24,6 @@
     <div class="row">
         <a href="{{ route('personal.post.create') }}" class="btn btn-outline-secondary w-100">Новый пост</a>
     </div>
+    <hr>
+    <index-post-component v-bind:user="{{auth()->user()}}" ></index-post-component>
 @endsection
