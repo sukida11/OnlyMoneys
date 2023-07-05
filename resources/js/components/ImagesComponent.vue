@@ -9,6 +9,14 @@
         Фотографии для поста
     </div>
     <p class="mt-4">
+        <select v-model="paidOrFree" name="post_status">
+            <template v-for="(value, key) in paidOrFreeJSON" >
+                <option v-if="key === 0" selected :value="key">{{value}}</option>
+                <option v-if="key !== 0"  :value="key">{{value}}</option>
+            </template>
+        </select>
+    </p>
+    <p class="mt-4">
         <input @click.prevent="store" type="submit" class="btn btn-outline-primary" value="Создать">
     </p>
 </template>
@@ -22,15 +30,18 @@ export default {
     data() {
         return {
             dropzone: null,
-            content: null
+            content: null,
+            paidOrFreeJSON: null,
+            paidOrFree: null
         }
     },
 
     props: [
-        'redirect_link_after_create_post'
+        'redirect_link_after_create_post',
     ],
 
     mounted() {
+        this.getPostStatus()
         this.dropzone = new Dropzone(this.$refs.dropzone, {
             url: '/api/posts',
             autoProcessQueue: false,
@@ -46,6 +57,7 @@ export default {
                 data.append('images[]', file)
             })
             data.append('content', this.content)
+            data.append('paid', this.paidOrFree);
             this.dropzone.removeAllFiles()
             this.content = null
             axios.post(`/api/posts`, data)
@@ -53,7 +65,16 @@ export default {
                     console.log(response);
                     window.location.replace(this.redirect_link_after_create_post)
                 })
+        },
+
+        getPostStatus() {
+            axios.get('/api/paid')
+                .then(response => {
+                    this.paidOrFreeJSON = response.data
+                    this.paidOrFree = Object.keys(this.paidOrFreeJSON)[0];
+                })
         }
+
     }
 
 }

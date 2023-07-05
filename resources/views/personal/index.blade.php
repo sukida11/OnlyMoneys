@@ -25,5 +25,5 @@
         <a href="{{ route('personal.post.create') }}" class="btn btn-outline-secondary w-100">Новый пост</a>
     </div>
     <hr>
-    <index-post-component v-bind:user="{{auth()->user()}}" ></index-post-component>
+    <index-post-component v-bind:user="{{auth()->user()}}" edit_link_without_id="/personal/posts/edit/"></index-post-component>
 @endsection

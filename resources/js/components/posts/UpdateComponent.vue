@@ -8,6 +8,14 @@
     <div ref="dropzone" class="btn bg-dark text-light d-flex" style="height: 300px">
         Фотографии для поста
     </div>
+    <p class="mt-4" v-if="post">
+        <select v-model="post.paid" name="post_status">
+            <template v-for="(value, key) in paidOrFreeJSON" >
+                <option v-if="key === 0" selected :value="key">{{value}}</option>
+                <option v-if="key !== 0"  :value="key">{{value}}</option>
+            </template>
+        </select>
+    </p>
     <p class="mt-4">
         <input @click.prevent="update" type="submit" class="btn btn-outline-primary" value="Создать">
     </p>
@@ -23,7 +31,9 @@ export default {
         return {
             dropzone: null,
             post: null,
-            imagesIdForDelete: []
+            imagesIdForDelete: [],
+            paidOrFreeJSON: null,
+            paidOrFree: null
         }
     },
 
@@ -33,6 +43,7 @@ export default {
 
     mounted() {
         this.getPost()
+        this.getPostStatus()
         this.dropzone = new Dropzone(this.$refs.dropzone, {
             url: '/api/posts',
             autoProcessQueue: false,
@@ -54,6 +65,7 @@ export default {
             this.imagesIdForDelete.forEach(id => {
                 data.append('delete_images[]', id)
             })
+            data.append('paid', this.post.paid)
             data.append('_method', 'patch')
             this.dropzone.removeAllFiles()
             this.content = null
@@ -66,15 +78,23 @@ export default {
         getPost() {
             axios.get(`/api/posts/${this.post_id}`)
                 .then(response => {
-                    console.log(response);
                     this.post = response.data.data;
                     this.post.images.forEach(image => {
                         let file = {id: image.id, name: image.name, size: image.size}
                         this.dropzone.displayExistingFile(file, image.url);
                     })
                 })
+        },
+
+        getPostStatus() {
+            axios.get('/api/paid')
+                .then(response => {
+                    this.paidOrFreeJSON = response.data
+                })
         }
-    }
+    },
+
+
 
 }
 </script>

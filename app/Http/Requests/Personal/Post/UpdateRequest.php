@@ -24,7 +24,8 @@ class UpdateRequest extends FormRequest
         return [
             'content' => ['required', 'string'],
             'images' => ['array'],
-            'delete_images' => ['array']
+            'delete_images' => ['array'],
+            'paid' => ['required', 'string'],
         ];
     }
 }

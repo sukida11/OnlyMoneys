@@ -23,7 +23,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string'],
-            'images' => ['array']
+            'images' => ['array'],
+            'paid' => ['required', 'string']
         ];
     }
 }

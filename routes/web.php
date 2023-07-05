@@ -42,7 +42,7 @@ Route::group(
         ], function () {
             Route::get('/', 'CreateController')->name('personal.post.create');
             Route::post('/', 'StoreController')->name('personal.post.store');
-            Route::get('/{post}', 'EditController')->name('personal.post.edit');
+            Route::get('/edit/{post}', 'EditController')->name('personal.post.edit');
         });
 
 });

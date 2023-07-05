@@ -23,6 +23,7 @@ class PostResource extends JsonResource
             'images' => ImageContentResource::collection($this->images),
             'user' => new PersonResource($this->user),
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
+            'paid' => $this->paid
         ];
     }
 }

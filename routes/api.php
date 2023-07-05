@@ -23,4 +23,6 @@ Route::group(['prefix' => 'posts', 'namespace' => 'App\\Http\\Controllers\\Perso
     Route::get('/', 'IndexController');
     Route::get('/{post}', 'ShowController');
     Route::patch('/{post}', 'UpdateController');
+    Route::delete('/{post}', 'DestroyController');
 });
+Route::get('/paid', 'App\\Http\\Controllers\\Personal\\Post\\GetPostPaidOrFreeController');

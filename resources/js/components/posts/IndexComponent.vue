@@ -9,7 +9,10 @@
             <p>
                 {{ post.created_at }}
             </p>
-            <p v-if="user.id === post.user.id"><a class="btn btn-outline-primary" :href="`/personal/posts/${post.id}`">Редактировать</a></p>
+            <p v-if="user.id === post.user.id">
+                <a class="btn btn-outline-primary" :href="`${this.edit_link_without_id}${post.id}`">Редактировать</a>
+                <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="fas fa-trash"></i></a>
+            </p>
             <hr>
         </div>
 
@@ -28,7 +31,8 @@ export default {
 
     props: [
         'user',
-       'edit_post_route'
+       'edit_post_route',
+        'edit_link_without_id'
     ],
 
     mounted() {
@@ -41,6 +45,15 @@ export default {
                 .then(response => {
                     this.posts = response.data.data
                 })
+        },
+
+        deletePost(id) {
+            if (confirm('Вы правда хотите удалить этот пост?')) {
+                axios.delete(`/api/posts/${id}`)
+                    .then(response => {
+                        this.getPosts()
+                    })
+            }
         }
     }
 }

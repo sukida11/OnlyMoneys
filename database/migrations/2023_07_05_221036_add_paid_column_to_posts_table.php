@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_likes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('posts', function (Blueprint $table) {
+            $table->enum('paid', [0, 1]);
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_likes');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('paid');
+        });
     }
 };

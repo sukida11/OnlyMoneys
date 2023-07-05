@@ -14,6 +14,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -55,17 +56,7 @@
                                     {{ Auth::user()->username }}
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        Выйти
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                            </li>
+                            <logout-component logout_link="{{ route('logout') }}" login_link="{{ route('login') }}"></logout-component>
 {{--                            <li class="nav-item dropdown">--}}
 {{--                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>--}}
 {{--                                    {{ Auth::user()->username }}--}}
