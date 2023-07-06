@@ -9,11 +9,11 @@
             <p>
                 {{ post.created_at }}
             </p>
-            <p v-if="user.id === post.user.id">
-                <a class="btn btn-outline-primary" :href="`${this.edit_link_without_id}${post.id}`">Редактировать</a>
-                <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="fas fa-trash"></i></a>
-                <a href="" style="pointer-events: none;" class="m-lg-2"><i class="fas fa-heart"></i></a>{{ post.likes }}
-                <!--                <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="far fa-heart"></i></a>-->
+            <p>
+                <a v-if="post.liked" @click.prevent="like(post.id)" href="" class="m-lg-2"><i
+                    class="fas fa-heart"></i></a>
+                <a v-if="!post.liked" @click.prevent="like(post.id)" href="#" class="m-lg-3"><i class="far fa-heart"></i></a>
+                {{ post.likes }}
             </p>
             <hr>
         </div>
@@ -30,15 +30,16 @@ export default {
         return {
             posts: [],
             count_content: null,
-            post_end: false
+            post_end: false,
+            offset: 0,
+
         }
     },
 
     props: [
         'user',
-        'edit_post_route',
-        'edit_link_without_id',
-        'content_per_page'
+        'content_per_page',
+        'liked_posts'
     ],
 
     mounted() {
@@ -48,36 +49,22 @@ export default {
 
     methods: {
         getPosts() {
-            axios.get(`/api/posts?count_content=${this.count_content}`)
+            axios.get(`/api/show/${this.user.id}?count_content=${this.count_content}`)
                 .then(response => {
-                    console.log(response);
                     this.posts = response.data.data
                     this.count_content += Number(this.content_per_page)
                 })
         },
 
-        deletePost(id) {
-            if (confirm('Вы правда хотите удалить этот пост?')) {
-                axios.delete(`/api/posts/${id}`)
-                    .then(response => {
-                        axios.get(`/api/show/load_with_limit/${this.posts[0].user.id}?limit=${this.count_content-2}`)
-                            .then(response => {
-                                this.posts = response.data.data
-                            })
-                    })
-            }
-        },
-
         load_content() {
 
-            axios.get(`/api/posts?count_content=${this.count_content}`)
+            axios.get(`/api/show/${this.user.id}?count_content=${this.count_content}`)
                 .then(response => {
                     if (response.data.data.length === 0) {
                         alert('Публикации закончились!')
                         this.post_end = true
                     } else {
                         response.data.data.forEach(post => {
-                            console.log(post);
 
 
                             this.posts.push(post)
@@ -88,7 +75,30 @@ export default {
 
                 })
 
+        },
+
+        postLike(post) {
+            console.log(post);
+            return this.liked_posts.find((postToFind) => postToFind.id === post.id);
+        },
+
+        like(post_id) {
+
+            axios.post(`/api/show/like/${post_id}`)
+                .then(response => {
+                    axios.get(`/api/show/load_with_limit/${this.user.id}?limit=${this.count_content-2}`)
+                        .then(response => {
+                            this.posts = response.data.data
+
+                        })
+
+                })
+
         }
+    },
+
+    computed: {
+
     }
 }
 </script>

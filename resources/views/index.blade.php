@@ -2,6 +2,6 @@
 
 @section('content')
 
-    11111
+    <main-component></main-component>
 
 @endsection

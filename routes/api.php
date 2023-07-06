@@ -19,13 +19,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::group(['prefix' => 'posts', 'namespace' => 'App\\Http\\Controllers\\Personal\\Post'], function () {
+Route::group([
+
+    'prefix' => 'posts',
+    'namespace' => 'App\\Http\\Controllers\\Personal\\Post'
+
+], function () {
+
     Route::post('/', 'StoreController');
     Route::get('/', 'IndexController');
     Route::get('/{post}', 'ShowController');
     Route::patch('/{post}', 'UpdateController');
     Route::delete('/{post}', 'DestroyController');
+
 });
+
 Route::get('/paid', 'App\\Http\\Controllers\\Personal\\Post\\GetPostPaidOrFreeController');
 
 Route::group([
@@ -38,4 +46,28 @@ Route::group([
 
     Route::get('/', 'IndexController');
 
+});
+
+Route::group([
+
+    'namespace' => 'App\\Http\\Controllers\\Personal',
+    'prefix' => 'personal'
+
+], function () {
+
+    Route::get('/find', 'FindPersonController');
+
+});
+
+
+Route::group([
+
+    'namespace' => 'App\\Http\\Controllers\\Post',
+    'prefix' => 'show'
+
+], function () {
+    Route::get('/{user}', 'IndexController');
+    Route::post('/like/{post}', 'LikeController');
+    Route::get('/load_with_limit/{user}', 'LoadPostsWithLimit');
+    Route::get('/likes/{user}', 'LikedPostsController');
 });

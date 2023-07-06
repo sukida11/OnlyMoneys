@@ -24,7 +24,7 @@ Route::group(
     [
 
         'namespace' => 'App\\Http\\Controllers\\Personal',
-        'middleware' => 'auth',
+        'middleware' => 'auth:sanctum',
         'prefix' => 'personal'
 
     ],
@@ -33,6 +33,7 @@ Route::group(
         Route::get('/edit', 'EditController')->name('personal.edit');
         Route::patch('/update/{user}', 'UpdateController')->name('personal.update');
         Route::get('/verify', 'VerifEmail')->name('personal.email');
+        Route::get('/show/{user}', 'ShowController')->name('personal.show');
 
         Route::group([
 

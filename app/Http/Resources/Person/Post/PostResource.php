@@ -25,7 +25,8 @@ class PostResource extends JsonResource
             'user' => new PersonResource($this->user),
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
             'paid' => $this->paid,
-            'likes' => PostLike::where('post_id', $this->id)->count()
+            'likes' => PostLike::where('post_id', $this->id)->count(),
+            'liked' => auth()->user()->likes->contains($this->id)
         ];
     }
 }
