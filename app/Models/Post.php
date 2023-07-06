@@ -13,6 +13,8 @@ class Post extends Model
     protected $guarded = false;
     protected $table = 'posts';
 
+    public const COUNT_CONTENT_PER_PAGE = 2;
+
     const PAID = 1;
     const FREE = 0;
 

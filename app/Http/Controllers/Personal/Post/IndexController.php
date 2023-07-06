@@ -11,8 +11,9 @@ class IndexController extends Controller
 {
     public function __invoke()
     {
+        $count_content = (int)$_GET['count_content'] ?? Post::COUNT_CONTENT_PER_PAGE;
 
-        return PostResource::collection(Post::latest()->get());
+        return PostResource::collection(Post::latest()->offset($count_content-Post::COUNT_CONTENT_PER_PAGE)->limit(Post::COUNT_CONTENT_PER_PAGE)->get());
 
     }
 }

@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::group(['prefix' => 'posts', 'namespace' => 'App\\Http\\Controllers\\Personal\\Post'], function () {
     Route::post('/', 'StoreController');
     Route::get('/', 'IndexController');
@@ -26,3 +27,15 @@ Route::group(['prefix' => 'posts', 'namespace' => 'App\\Http\\Controllers\\Perso
     Route::delete('/{post}', 'DestroyController');
 });
 Route::get('/paid', 'App\\Http\\Controllers\\Personal\\Post\\GetPostPaidOrFreeController');
+
+Route::group([
+
+    'namespace' => 'App\\Http\\Controllers\\Like',
+    'middleware' => 'auth:sanctum',
+    'prefix' => 'likes'
+
+], function () {
+
+    Route::get('/', 'IndexController');
+
+});

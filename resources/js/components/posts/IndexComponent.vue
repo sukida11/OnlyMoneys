@@ -12,9 +12,12 @@
             <p v-if="user.id === post.user.id">
                 <a class="btn btn-outline-primary" :href="`${this.edit_link_without_id}${post.id}`">Редактировать</a>
                 <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="fas fa-trash"></i></a>
+                <a href="" style="pointer-events: none;" class="m-lg-2"><i class="fas fa-heart"></i></a>{{post.likes}}
+<!--                <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="far fa-heart"></i></a>-->
             </p>
             <hr>
         </div>
+        <button @click.prevent="load_content" class="btn btn-outline-secondary">Загрузить ещё</button>
 
     </div>
 </template>
@@ -25,25 +28,30 @@ export default {
 
     data() {
         return {
-            posts: null,
+            posts: [],
+            count_content: null,
         }
     },
 
     props: [
         'user',
        'edit_post_route',
-        'edit_link_without_id'
+        'edit_link_without_id',
+        'content_per_page'
     ],
 
     mounted() {
+        this.count_content = Number(this.content_per_page)
         this.getPosts()
     },
 
     methods: {
         getPosts() {
-            axios.get('/api/posts')
+            axios.get(`/api/posts?count_content=${this.count_content}`)
                 .then(response => {
+                    console.log(response);
                     this.posts = response.data.data
+                    this.count_content += Number(this.content_per_page)
                 })
         },
 
@@ -54,6 +62,18 @@ export default {
                         this.getPosts()
                     })
             }
+        },
+
+        load_content() {
+
+            axios.get(`/api/posts?count_content=${this.count_content}`)
+                .then(response => {
+                    response.data.data.forEach(post => {
+                        this.posts.push(post)
+                    })
+                    this.count_content += Number(this.content_per_page)
+                })
+
         }
     }
 }
