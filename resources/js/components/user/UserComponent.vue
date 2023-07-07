@@ -39,10 +39,18 @@ export default {
     props: [
         'user',
         'content_per_page',
-        'liked_posts'
+        'liked_posts',
+        'auth_user',
+        'user_personal_link'
     ],
 
     mounted() {
+
+        if(this.user.id === this.auth_user.id)
+        {
+            window.location.replace(this.user_personal_link)
+        }
+
         this.count_content = Number(this.content_per_page)
         this.getPosts()
     },

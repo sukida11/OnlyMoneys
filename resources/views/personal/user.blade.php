@@ -16,5 +16,5 @@
         </div>
     </div>
     <hr>
-    <user-component v-bind:user="{{$user}}" content_per_page="{{ \App\Models\Post::COUNT_CONTENT_PER_PAGE }}" v-bind:liked_posts="{{auth()->user()->likes}}"></user-component>
+    <user-component user_personal_link="{{route('personal.index')}}" v-bind:auth_user="{{auth()->user()}}" v-bind:user="{{$user}}" content_per_page="{{ \App\Models\Post::COUNT_CONTENT_PER_PAGE }}" v-bind:liked_posts="{{auth()->user()->likes}}"></user-component>
 @endsection

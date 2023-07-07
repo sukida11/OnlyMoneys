@@ -14,7 +14,9 @@ class FindPersonController extends Controller
         $usernameForFind = $_GET['username'] ?? false;
 
         if ($usernameForFind) {
-            $result = User::where('username', 'like', "%$usernameForFind%")->get();
+            $result = User::where('username', 'like', "%$usernameForFind%")
+                ->where('username', '!=', auth()->user()->username)
+                ->get();
 
             if (count($result) < 1) $result = "Никто не был найден! Попробуйте снова!";
 
