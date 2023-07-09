@@ -19,6 +19,7 @@ import MainComponent from "./components/MainComponent.vue";
 import NavbarSearch from "./components/NavbarSearch.vue";
 import UserComponent from "./components/user/UserComponent.vue";
 import SubscribeComponent from "@/components/subscribe/SubscribeComponent.vue";
+import IndexSubscribeComponent from "@/components/subscribe/IndexSubscribeComponent.vue";
 app.component('images-component', ImagesComponent);
 app.component('login-component', LoginComponent);
 app.component('registration-component', RegComponent)
@@ -29,5 +30,6 @@ app.component('main-component', MainComponent)
 app.component('navbar-search', NavbarSearch)
 app.component('user-component', UserComponent)
 app.component('subscribe-component', SubscribeComponent)
+app.component('index-subscribe-component', IndexSubscribeComponent)
 
 app.mount('#app');

@@ -21,6 +21,7 @@ class PersonResource extends JsonResource
             'username' => $this->username,
             'subscribe' => $this->subscribe_on,
             'subscribers' => Subscriber::where('profile_id', $this->id)->count(),
+            'bio' => $this->bio
         ];
     }
 }

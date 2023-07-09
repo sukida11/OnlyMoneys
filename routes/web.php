@@ -35,6 +35,10 @@ Route::group(
         Route::get('/verify', 'VerifEmail')->name('personal.email');
         Route::get('/show/{user}', 'ShowController')->name('personal.show');
 
+        Route::group(['namespace' => 'Subscribe'], function () {
+            Route::get('/subs', 'IndexController')->name('personal.subs.index');
+        });
+
         Route::group([
 
             'namespace' => 'Post',
@@ -46,6 +50,6 @@ Route::group(
             Route::get('/edit/{post}', 'EditController')->name('personal.post.edit');
         });
 
-});
+    });
 
 

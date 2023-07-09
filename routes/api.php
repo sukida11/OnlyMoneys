@@ -57,6 +57,10 @@ Route::group([
 
     Route::get('/find', 'FindPersonController');
 
+    Route::group(['namespace' => 'Subscribe', 'prefix' => 'subs', 'middleware' => 'auth:sanctum'], function () {
+        Route::get('/', 'GetSubscribesController');
+    });
+
 });
 
 

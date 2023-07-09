@@ -17,7 +17,8 @@
             </h1>
             <p>{{ $user->email }} | {{ $user->name }}</p>
             <p class="bg-dark text-light p-3">{{ $user->bio }}</p>
-            <p><a href="{{ route('personal.edit') }}" class="btn btn-outline-secondary">Настройки</a></p>
+            <p><a href="{{ route('personal.edit') }}" class="btn btn-outline-secondary">Настройки</a>
+                &nbsp;<a href="{{ route('personal.subs.index') }}" class="btn btn-outline-primary">Подписки</a></p>
         </div>
     </div>
     <hr>
