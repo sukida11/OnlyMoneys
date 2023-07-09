@@ -13,9 +13,9 @@
                 {{ post.created_at }}
             </p>
             <p>
-                <a v-if="post.liked" @click.prevent="like(post.id)" href="" class="m-lg-2"><i
+                <a v-if="post.liked" @click.prevent="like(post.id)" href="" class=""><i
                     class="fas fa-heart"></i></a>
-                <a v-if="!post.liked" @click.prevent="like(post.id)" href="#" class="m-lg-3"><i class="far fa-heart"></i></a>
+                <a v-if="!post.liked" @click.prevent="like(post.id)" href="#" class=""><i class="far fa-heart"></i></a>
                 {{ post.likes }}
             </p>
             <hr>
@@ -51,8 +51,16 @@ export default {
         'auth_user',
         'user_personal_link',
         'subscribe_on',
-        'subscribers'
+        'subscribers',
+        'post_count'
     ],
+
+    updated() {
+        if (this.posts.length === Number(this.post_count))
+        {
+            this.post_end = true
+        }
+    },
 
     mounted() {
 
@@ -71,6 +79,7 @@ export default {
         getPosts() {
             axios.get(`/api/show/${this.user.id}?count_content=${this.count_content}`)
                 .then(response => {
+
                     this.posts = response.data.data
                     this.count_content += Number(this.content_per_page)
                 })
@@ -80,10 +89,8 @@ export default {
 
             axios.get(`/api/show/${this.user.id}?count_content=${this.count_content}`)
                 .then(response => {
-                    if (response.data.data.length === 0) {
-                        alert('Публикации закончились!')
-                        this.post_end = true
-                    } else {
+                    if (response.data.data.length !== 0) {
+
                         response.data.data.forEach(post => {
 
 

@@ -26,5 +26,5 @@
         <a href="{{ route('personal.post.create') }}" class="btn btn-outline-secondary w-100">Новый пост</a>
     </div>
     <hr>
-    <index-post-component v-bind:user="{{auth()->user()}}" edit_link_without_id="/personal/posts/edit/" content_per_page="{{\App\Models\Post::COUNT_CONTENT_PER_PAGE}}"></index-post-component>
+    <index-post-component post_count="{{\App\Models\Post::where('user_id', auth()->user()->id)->count()}}" v-bind:user="{{auth()->user()}}" edit_link_without_id="/personal/posts/edit/" content_per_page="{{\App\Models\Post::COUNT_CONTENT_PER_PAGE}}"></index-post-component>
 @endsection

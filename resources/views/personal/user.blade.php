@@ -24,6 +24,8 @@
         v-bind:auth_user="{{auth()->user()}}"
         v-bind:user="{{$user}}"
         content_per_page="{{ \App\Models\Post::COUNT_CONTENT_PER_PAGE }}"
-        v-bind:liked_posts="{{auth()->user()->likes}}">
+        v-bind:liked_posts="{{auth()->user()->likes}}"
+        post_count="{{\App\Models\Post::where('user_id', $user->id)->count()}}"
+    >
     </user-component>
 @endsection

@@ -38,8 +38,16 @@ export default {
         'user',
         'edit_post_route',
         'edit_link_without_id',
-        'content_per_page'
+        'content_per_page',
+        'post_count'
     ],
+
+    updated() {
+        if(this.posts.length === Number(this.post_count))
+        {
+            this.post_end = true
+        }
+    },
 
     mounted() {
         this.count_content = Number(this.content_per_page)
@@ -50,7 +58,6 @@ export default {
         getPosts() {
             axios.get(`/api/posts?count_content=${this.count_content}`)
                 .then(response => {
-                    console.log(response);
                     this.posts = response.data.data
                     this.count_content += Number(this.content_per_page)
                 })
@@ -72,10 +79,10 @@ export default {
 
             axios.get(`/api/posts?count_content=${this.count_content}`)
                 .then(response => {
-                    if (response.data.data.length === 0) {
-                        alert('Публикации закончились!')
-                        this.post_end = true
-                    } else {
+
+
+                    if (response.data.data.length !== 0) {
+
                         response.data.data.forEach(post => {
                             console.log(post);
 
