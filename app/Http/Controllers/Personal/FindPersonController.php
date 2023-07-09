@@ -14,9 +14,12 @@ class FindPersonController extends Controller
         $usernameForFind = $_GET['username'] ?? false;
 
         if ($usernameForFind) {
-            $result = User::where('username', 'like', "%$usernameForFind%")
-                ->where('username', '!=', auth()->user()->username)
-                ->get();
+            $query = User::where('username', 'like', "%$usernameForFind%");
+            if(auth()->user())
+            {
+                $query->where('username', '!=', auth()->user()->username);
+            }
+                $result = $query->get();
 
             if (count($result) < 1) $result = "Никто не был найден! Попробуйте снова!";
 
@@ -24,6 +27,8 @@ class FindPersonController extends Controller
 
             return response()->json(['message' => $result]);
         }
+
+        return response([]);
 
     }
 }

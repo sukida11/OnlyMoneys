@@ -1,6 +1,9 @@
 <template>
-    <div v-if="posts">
+    <subscribe-component ref="subscribe" v-bind:subscribe_on="this.subscribe_on" v-bind:profile="this.user" v-bind:user="this.auth_user"></subscribe-component>
+
+    <div class="mt-5" v-if="posts">
         <div v-for="post in posts">
+            <template v-if="true">
             <p v-if="user.id !== post.user.id">{{ post.user.username }}</p>
             <h5>{{ post.content }}</h5>
             <div class="d-flex mt-2 mb-2" style="width: 100px ; height: 100px">
@@ -16,6 +19,7 @@
                 {{ post.likes }}
             </p>
             <hr>
+            </template>
         </div>
         <button v-if="!post_end" @click.prevent="load_content" class="btn btn-outline-secondary">Загрузить ещё</button>
 
@@ -23,8 +27,11 @@
 </template>
 
 <script>
+import SubscribeComponent from "../../components/subscribe/SubscribeComponent.vue";
 export default {
     name: "IndexComponent",
+
+    components: {SubscribeComponent},
 
     data() {
         return {
@@ -32,7 +39,8 @@ export default {
             count_content: null,
             post_end: false,
             offset: 0,
-
+            payed_subscriber: false,
+            sub: false,
         }
     },
 
@@ -41,10 +49,14 @@ export default {
         'content_per_page',
         'liked_posts',
         'auth_user',
-        'user_personal_link'
+        'user_personal_link',
+        'subscribe_on',
+        'subscribers'
     ],
 
     mounted() {
+
+        this.dataSubscribers = this.subscribers
 
         if(this.user.id === this.auth_user.id)
         {
@@ -103,6 +115,7 @@ export default {
                 })
 
         }
+
     },
 
     computed: {

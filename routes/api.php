@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return new \App\Http\Resources\Person\PersonResource($request->user());
 });
 
 
@@ -71,3 +71,12 @@ Route::group([
     Route::get('/load_with_limit/{user}', 'LoadPostsWithLimit');
     Route::get('/likes/{user}', 'LikedPostsController');
 });
+
+Route::group([
+    'namespace' => 'App\\Http\\Controllers\\Subscriber',
+    'prefix' => 'subs',
+    'middleware' => ['auth:sanctum', 'verified']
+], function () {
+    Route::post('/subscribe/{user}', 'SubscribeController');
+});
+
