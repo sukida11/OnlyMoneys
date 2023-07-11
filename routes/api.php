@@ -74,6 +74,17 @@ Route::group([
     Route::post('/like/{post}', 'LikeController');
     Route::get('/load_with_limit/{user}', 'LoadPostsWithLimit');
     Route::get('/likes/{user}', 'LikedPostsController');
+
+    Route::group([
+        'namespace' => 'Comment',
+        'prefix' => 'comments',
+        'middleware' => ['auth:sanctum', 'verified']
+    ], function () {
+        Route::post('/', 'StoreController');
+        Route::get('/{post}', 'ShowController');
+        Route::delete('/{comment}', 'DestroyController');
+    });
+
 });
 
 Route::group([

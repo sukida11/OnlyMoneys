@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use function MongoDB\BSON\toJSON;
 
 class Post extends Model
 {
@@ -31,6 +30,11 @@ class Post extends Model
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(PostComment::class, 'post_id', 'id');
     }
 
 }

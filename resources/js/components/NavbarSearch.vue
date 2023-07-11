@@ -3,8 +3,8 @@
         <ul class="nav navbar-nav pull-xs-right">
             <li class="nav-item">
                 <div class="d-flex">
-                    <input class="form-control" v-model="usernameForSearch" type="text" placeholder="Search">
-                    <button class="btn btn-outline-success" @click.prevent="findPerson" type="submit">Search</button>
+                    <input class="form-control" @keyup="findPerson" v-model="usernameForSearch" type="text" placeholder="Search">
+<!--                    <button class="btn btn-outline-success" @click.prevent="findPerson" type="submit">Search</button>-->
                 </div>
             </li>
             <div class="dropdown-menu d-inline-block" v-if="search" style="margin-top:2.5em">
@@ -36,6 +36,7 @@ export default {
 
     methods: {
         findPerson() {
+
             axios.get(`/api/personal/find?username=${this.usernameForSearch}`)
                 .then(response => {
                     console.log(response);

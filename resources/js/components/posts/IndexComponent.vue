@@ -12,9 +12,28 @@
             <p v-if="user.id === post.user.id">
                 <a class="btn btn-outline-primary" :href="`${this.edit_link_without_id}${post.id}`">Редактировать</a>
                 <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="fas fa-trash"></i></a>
-                <a href="" style="pointer-events: none;" class="m-lg-2"><i class="fas fa-heart"></i></a>{{ post.likes }}
-                <!--                <a href="#" class="m-lg-3" @click.prevent="deletePost(post.id)"><i class="far fa-heart"></i></a>-->
+                <a href="" style="pointer-events: none;" class="m-lg-2"><i class="fas fa-heart"></i></a>{{ post.likes }}&nbsp;
+                <a href="#" @click.prevent="check_comments(post.id)"><i class="fas fa-message"></i></a>
             </p>
+            <div :hidden="!comments(post.id)" class="p-2 mb-3" v-if="comments">
+                <div class="justify-content-center">
+                    <a href="#" @click.prevent="drop_comments"><i class="fas fa-xmark"></i></a>
+                </div>
+                <div class="d-flex">
+                    <input v-model="message_content" type="text" class="form-control w-25">
+                    <button @click.prevent="create_comment" class="btn btn-outline-success">Отправить</button>
+                </div>
+                <div v-if="postComments" class="mt-2 mb-2" v-for="comment in postComments">
+                    <p>
+                        {{  comment.username }}:
+                        <strong>
+                            {{comment.content}}
+                        </strong><br>
+                        {{ comment.created_at }}
+                    </p>
+                        <a href="#" @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
+                </div>
+            </div>
             <hr>
         </div>
         <button v-if="!post_end" @click.prevent="load_content" class="btn btn-outline-secondary">Загрузить ещё</button>
@@ -30,7 +49,10 @@ export default {
         return {
             posts: [],
             count_content: null,
-            post_end: false
+            post_end: false,
+            post_comment: null,
+            message_content: null,
+            postComments: []
         }
     },
 
@@ -101,6 +123,49 @@ export default {
             {
                 this.post_end = true
             }
+        },
+
+        comments(post_id) {
+            return this.post_comment === post_id
+        },
+
+        check_comments(post_id) {
+            this.post_comment = post_id;
+            this.get_comments();
+        },
+
+        drop_comments() {
+            this.post_comment = null;
+            this.postComments = []
+        },
+
+        get_comments()
+        {
+            axios.get(`/api/show/comments/${this.post_comment}`)
+                .then(response => {
+                    this.postComments = response.data.data
+                })
+        },
+
+        create_comment()
+        {
+            axios.post('/api/show/comments', {
+                content: this.message_content,
+                post_id: this.post_comment,
+            })
+                .then(response => {
+                    this.message_content = null
+                    this.get_comments()
+                })
+        },
+
+        deleteComment(comment_id)
+        {
+            if(confirm('Вы уверены, что хотите удалить этот комментарий?'))
+                axios.delete(`/api/show/comments/${comment_id}`)
+                    .then(response => {
+                        this.get_comments()
+                    })
         }
     }
 }
