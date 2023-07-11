@@ -43,10 +43,7 @@ export default {
     ],
 
     updated() {
-        if(this.posts.length === Number(this.post_count))
-        {
-            this.post_end = true
-        }
+        this.checkContentEnd()
     },
 
     mounted() {
@@ -73,6 +70,7 @@ export default {
                             })
                     })
             }
+            this.checkContentEnd()
         },
 
         load_content() {
@@ -95,6 +93,14 @@ export default {
 
                 })
 
+        },
+
+        checkContentEnd()
+        {
+            if(this.posts.length === Number(this.post_count))
+            {
+                this.post_end = true
+            }
         }
     }
 }

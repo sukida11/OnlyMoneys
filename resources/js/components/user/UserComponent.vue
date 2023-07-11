@@ -1,4 +1,4 @@
-<template>
+<template >
     <subscribe-component ref="subscribe" v-bind:subscribe_on="this.subscribe_on" v-bind:profile="this.user" v-bind:user="this.auth_user"></subscribe-component>
 
     <div class="mt-5" v-if="posts">
@@ -21,8 +21,8 @@
             <hr>
             </template>
         </div>
-        <button v-if="!post_end" @click.prevent="load_content" class="btn btn-outline-secondary">Загрузить ещё</button>
 
+        <button v-if="!post_end" @click.prevent="load_content" class="btn btn-outline-secondary">Загрузить ещё</button>
     </div>
 </template>
 
@@ -56,14 +56,10 @@ export default {
     ],
 
     updated() {
-        if (this.posts.length === Number(this.post_count))
-        {
-            this.post_end = true
-        }
+        this.checkContentEnd()
     },
 
     mounted() {
-
         this.dataSubscribers = this.subscribers
 
         if(this.user.id === this.auth_user.id)
@@ -121,6 +117,14 @@ export default {
 
                 })
 
+        },
+
+        checkContentEnd()
+        {
+            if(this.posts.length === Number(this.post_count))
+            {
+                this.post_end = true
+            }
         }
 
     },
