@@ -23,7 +23,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'content' => ['required', 'string'],
-            'post_id' => ['required', 'integer']
+            'post_id' => ['required', 'integer'],
+            'comment_id' => ['integer']
         ];
     }
 }

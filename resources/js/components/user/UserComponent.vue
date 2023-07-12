@@ -20,7 +20,7 @@
                     {{ post.likes }}
                     <a href="#" @click.prevent="check_comments(post.id)"><i class="fas fa-message"></i></a>
                 </p>
-                <div :hidden="!comments(post.id)" class="p-2 mb-3" v-if="comments">
+                <div :hidden="!comments(post.id)" class="p-2 mb-3 bg-dark text-light" v-if="comments">
                     <div class="justify-content-center">
                         <a href="#" @click.prevent="drop_comments"><i class="fas fa-xmark"></i></a>
                     </div>

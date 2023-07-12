@@ -15,23 +15,33 @@
                 <a href="" style="pointer-events: none;" class="m-lg-2"><i class="fas fa-heart"></i></a>{{ post.likes }}&nbsp;
                 <a href="#" @click.prevent="check_comments(post.id)"><i class="fas fa-message"></i></a>
             </p>
-            <div :hidden="!comments(post.id)" class="p-2 mb-3" v-if="comments">
+            <div :hidden="!comments(post.id)" class="p-2 bg-dark text-light" v-if="comments">
                 <div class="justify-content-center">
                     <a href="#" @click.prevent="drop_comments"><i class="fas fa-xmark"></i></a>
+                </div>
+                <div v-if="postComments" class="" v-for="comment in postComments">
+                    <p v-if="comment.is_comment">
+                        {{  comment.username }}:
+                        <strong>
+                            {{comment.content}} | <a @click.prevent="make_answer(comment)" href="#">Ответить</a>
+                        </strong><br>
+                        {{ comment.created_at }}
+                        <a href="#" @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
+                        <div v-if="comment.answers">
+                            <p class="p-lg-3" v-for="answer in comment.answers">
+                                {{  answer.username }}:
+                                <strong>
+                                    {{answer.content}} | <a @click.prevent="make_answer({id: comment.id, username: answer.username})" href="#">Ответить</a>
+                                </strong><br>
+                                {{ answer.created_at }}
+                                <a href="#" @click.prevent="deleteComment(answer.id)"><i class="fas fa-trash"></i></a>
+                            </p>
+                        </div>
+                    </p>
                 </div>
                 <div class="d-flex">
                     <input v-model="message_content" type="text" class="form-control w-25">
                     <button @click.prevent="create_comment" class="btn btn-outline-success">Отправить</button>
-                </div>
-                <div v-if="postComments" class="mt-2 mb-2" v-for="comment in postComments">
-                    <p>
-                        {{  comment.username }}:
-                        <strong>
-                            {{comment.content}}
-                        </strong><br>
-                        {{ comment.created_at }}
-                    </p>
-                        <a href="#" @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
                 </div>
             </div>
             <hr>
@@ -52,7 +62,8 @@ export default {
             post_end: false,
             post_comment: null,
             message_content: null,
-            postComments: []
+            postComments: [],
+            answerToComment: null
         }
     },
 
@@ -152,6 +163,7 @@ export default {
             axios.post('/api/show/comments', {
                 content: this.message_content,
                 post_id: this.post_comment,
+                comment_id: this.answerToComment
             })
                 .then(response => {
                     this.message_content = null
@@ -166,6 +178,13 @@ export default {
                     .then(response => {
                         this.get_comments()
                     })
+        },
+
+        make_answer(comment)
+        {
+            this.answerToComment = comment.id
+            this.message_content ="@" + comment.username + " "
+
         }
     }
 }

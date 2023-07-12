@@ -16,7 +16,8 @@ class StoreController extends Controller
         $comment = PostComment::create([
             'content' => $data['content'],
             'post_id' => $data['post_id'],
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'comment_id' => $data['comment_id'] ?? null
         ]);
 
         return response()->json(['data' => $comment]);
