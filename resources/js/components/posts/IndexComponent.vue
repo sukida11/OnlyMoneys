@@ -21,7 +21,7 @@
                 </div>
                 <div v-if="postComments" class="" v-for="comment in postComments">
                     <p v-if="comment.is_comment">
-                        {{  comment.username }}:
+                        {{  comment.user.username }}:
                         <strong>
                             {{comment.content}} | <a @click.prevent="make_answer(comment)" href="#">Ответить</a>
                         </strong><br>
@@ -29,15 +29,22 @@
                         <a href="#" @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
                         <div v-if="comment.answers">
                             <p class="p-lg-3" v-for="answer in comment.answers">
-                                {{  answer.username }}:
+                                {{  answer.user.username }}:
                                 <strong>
-                                    {{answer.content}} | <a @click.prevent="make_answer({id: comment.id, username: answer.username})" href="#">Ответить</a>
+                                    {{answer.content}} | <a @click.prevent="make_answer({id: comment.id, username: answer.user.username, content: answer.content})" href="#">Ответить</a>
                                 </strong><br>
                                 {{ answer.created_at }}
                                 <a href="#" @click.prevent="deleteComment(answer.id)"><i class="fas fa-trash"></i></a>
                             </p>
                         </div>
                     </p>
+                </div>
+                <div v-if="answer">
+                    <a href="#" @click.prevent="dropAnswer"><i class="fas fa-xmark"></i></a>
+                    {{  answerToCommentObj.user.username }}:
+                    <strong>
+                        {{answerToCommentObj.content}}
+                    </strong><br>
                 </div>
                 <div class="d-flex">
                     <input v-model="message_content" type="text" class="form-control w-25">
@@ -63,7 +70,8 @@ export default {
             post_comment: null,
             message_content: null,
             postComments: [],
-            answerToComment: null
+            answerToComment: null,
+            answerToCommentObj: null
         }
     },
 
@@ -167,6 +175,9 @@ export default {
             })
                 .then(response => {
                     this.message_content = null
+                    this.answerToComment = null
+                    this.message_content = null
+                    this.answerToCommentObj = null
                     this.get_comments()
                 })
         },
@@ -183,8 +194,19 @@ export default {
         make_answer(comment)
         {
             this.answerToComment = comment.id
-            this.message_content ="@" + comment.username + " "
+            this.message_content ="@" + comment.user.username + " "
+            this.answerToCommentObj = comment
+        },
 
+        dropAnswer() {
+            this.answerToComment = null
+            this.message_content = null
+            this.answerToCommentObj = null
+        }
+    },
+    computed: {
+        answer() {
+            return this.answerToComment
         }
     }
 }

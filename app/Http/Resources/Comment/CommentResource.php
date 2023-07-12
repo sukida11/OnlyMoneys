@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Comment;
 
+use App\Http\Resources\Person\PersonResource;
 use App\Models\PostComment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class CommentResource extends JsonResource
             'id' => $this->id,
             'content' => $this->content,
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
-            'username' => $this->user->username,
+            'user' => PersonResource::make($this->user),
+//            'username' => $this->user->username,
             'answers' => $this::collection(PostComment::where('comment_id', $this->id)->get()),
             'is_comment' => $this->comment_id === null
         ];
