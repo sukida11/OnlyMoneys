@@ -26,29 +26,33 @@
                     </div>
                     <div v-if="postComments" class="" v-for="comment in postComments">
                         <p v-if="comment.is_comment">
-                            {{  comment.user.username }}:
+                            {{ comment.user.username }}:
                             <strong>
-                                {{comment.content}} | <a @click.prevent="make_answer(comment)" href="#">Ответить</a>
+                                {{ comment.content }} | <a @click.prevent="make_answer(comment)" href="#">Ответить</a>
                             </strong><br>
                             {{ comment.created_at }}
-                            <a href="#" v-if="comment.user.id === auth_user.id" @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
+                            <a href="#" v-if="comment.user.id === auth_user.id"
+                               @click.prevent="deleteComment(comment.id)"><i class="fas fa-trash"></i></a>
                             <div v-if="comment.answers">
                                 <p class="p-lg-3" v-for="answer in comment.answers">
-                                    {{  answer.user.username }}:
+                                    {{ answer.user.username }}:
                                     <strong>
-                                        {{answer.content}} | <a @click.prevent="make_answer({id: comment.id, user: answer.user, content: answer.content})" href="#">Ответить</a>
+                                        {{ answer.content }} | <a
+                                        @click.prevent="make_answer({id: comment.id, user: answer.user, content: answer.content})"
+                                        href="#">Ответить</a>
                                     </strong><br>
                                     {{ answer.created_at }}
-                                    <a href="#" v-if="answer.user.id === auth_user.id" @click.prevent="deleteComment(answer.id)"><i class="fas fa-trash"></i></a>
+                                    <a href="#" v-if="answer.user.id === auth_user.id"
+                                       @click.prevent="deleteComment(answer.id)"><i class="fas fa-trash"></i></a>
                                 </p>
                             </div>
                         </p>
                     </div>
                     <div v-if="answer">
                         <a href="#" @click.prevent="dropAnswer"><i class="fas fa-xmark"></i></a>
-                        {{  answerToCommentObj.user.username }}:
+                        {{ answerToCommentObj.user.username }}:
                         <strong>
-                            {{answerToCommentObj.content}}
+                            {{ answerToCommentObj.content }}
                         </strong><br>
                     </div>
                     <div class="d-flex">
@@ -150,11 +154,8 @@ export default {
                     axios.get(`/api/show/load_with_limit/${this.user.id}?limit=${this.count_content - 2}`)
                         .then(response => {
                             this.posts = response.data.data
-
                         })
-
                 })
-
         },
 
         checkContentEnd() {
@@ -177,16 +178,15 @@ export default {
             this.postComments = []
         },
 
-        get_comments()
-        {
+        get_comments() {
             axios.get(`/api/show/comments/${this.post_comment}`)
                 .then(response => {
+                    console.log(response);
                     this.postComments = response.data.data
                 })
         },
 
-        create_comment()
-        {
+        create_comment() {
             axios.post('/api/show/comments', {
                 content: this.message_content,
                 post_id: this.post_comment,
@@ -201,19 +201,17 @@ export default {
                 })
         },
 
-        deleteComment(comment_id)
-        {
-            if(confirm('Вы уверены, что хотите удалить этот комментарий?'))
+        deleteComment(comment_id) {
+            if (confirm('Вы уверены, что хотите удалить этот комментарий?'))
                 axios.delete(`/api/show/comments/${comment_id}`)
                     .then(response => {
                         this.get_comments()
                     })
         },
 
-        make_answer(comment)
-        {
+        make_answer(comment) {
             this.answerToComment = comment.id
-            this.message_content ="@" + comment.user.username + " "
+            this.message_content = "@" + comment.user.username + " "
             this.answerToCommentObj = comment
         },
 

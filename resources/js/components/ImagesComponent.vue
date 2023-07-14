@@ -36,10 +36,6 @@ export default {
         }
     },
 
-    props: [
-        'redirect_link_after_create_post',
-    ],
-
     mounted() {
         this.getPostStatus()
         this.dropzone = new Dropzone(this.$refs.dropzone, {
@@ -63,7 +59,7 @@ export default {
             axios.post(`/api/posts`, data)
                 .then(response => {
                     console.log(response);
-                    window.location.replace(this.redirect_link_after_create_post)
+                    window.location.replace(this.$store.getters.PersonalPage)
                 })
         },
 

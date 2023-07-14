@@ -14,6 +14,16 @@ class LoadPostsWithLimit extends Controller
     {
         $limit = $_GET['limit'] ?? Post::COUNT_CONTENT_PER_PAGE;
 
+
+        if (isset($_GET['main']) && $_GET['main'] === 'true')
+        {
+            return PostResource::collection(
+                Post::latest()
+                    ->limit($limit)
+                    ->get()
+            );
+        }
+
         return PostResource::collection(
             Post::latest()
                 ->where('user_id', $user->id)
